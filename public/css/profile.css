@@ -1,0 +1,22 @@
+@media (max-width:300px) {
+    .header-title{
+        width: 90%;
+    }
+    .chapter-title{
+        max-width: 100px;
+    }
+    .mn-inner{
+        max-width: 100%;
+        margin: 0px;
+        padding: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .mn-inner .middle-content{
+        max-width: 100%;
+        margin: 0px;
+        padding: 0px;
+        margin-left: -2%;
+        margin-right: 0.2px; 
+    }
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>collab editing, yo</title>
+    <meta name="theme-color" content="#7030A0">
+    <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
+    <link rel="stylesheet" href="https://codemirror.net/theme/monokai.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/fold/foldgutter.css" />
+    <link rel="stylesheet" href="https://codemirror.net/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <script src="https://codemirror.net/lib/codemirror.js"></script>
+    <script src="https://codemirror.net/addon/mode/overlay.js"></script>
+    <script src="https://codemirror.net/mode/xml/xml.js"></script>
+    <script src="https://codemirror.net/mode/markdown/markdown.js"></script>
+    <script src="https://codemirror.net/mode/gfm/gfm.js"></script>
+
+    <script src="https://codemirror.net/addon/hint/show-hint.js"></script>
+    <script src="https://codemirror.net/addon/hint/javascript-hint.js"></script>
+    <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="https://codemirror.net/addon/fold/foldcode.js"></script>
+    <script src="https://codemirror.net/addon/fold/foldgutter.js"></script>
+    <script src="https://codemirror.net/addon/fold/brace-fold.js"></script>
+    <script src="https://codemirror.net/addon/fold/xml-fold.js"></script>
+    <script src="https://codemirror.net/addon/fold/comment-fold.js"></script>
+    <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
+    <!-- Search inside code -->
+    <script src="https://codemirror.net/addon/search/search.js"></script>
+    <script src="https://codemirror.net/addon/search/jump-to-line.js"></script>
+    <script src="https://codemirror.net/addon/search/searchcursor.js"></script>
+    <script src="https://codemirror.net/addon/dialog/dialog.js"></script>
+
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            max-width: inherit;
+            height: calc(100% - 25px);
+            background-color: #272822;
+        }
+        form,
+        .CodeMirror,
+        .CodeMirror-scroll {
+            height: calc(100% - 16px);
+        }
+        
+        .profile-image {
+            height: 50px;
+            vertical-align: middle;
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .nav-wrapper {
+            background: #7030A0;
+        }
+        
+        .dropdown-content {
+            width: 150px;
+            margin-top: 64px;
+        }
+        
+        .dropdown-content li {
+            float: right;
+        }
+        
+        .dropdown-content li a {
+            float: left;
+            width: 100%;
+        }
+        
+        input[type="search"] {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        input[type="text"] {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-button").dropdown();
+        });
+    </script>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <!--            <a class="" href="#" style="margin-left:2%;"><i class="fa fa-floppy-o" ></i> Save</a>-->
+            <ul class="left">
+                <li><a onclick="saveDocument()" class="waves-effect waves-light btn"><i class="material-icons left">save</i>Save</a></li>
+
+            </ul>
+            <ul class="right">
+                <li>
+                    <a class="dropdown-button" href="#!" data-activates="dropdown1"><img src="<%= user.google.pic %>" alt="" class="circle profile-image"> <%= user.google.name %> ▼</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <ul id="dropdown1" class="dropdown-content">
+        <li>
+            <!--            <a href="/logout" id="so">&nbsp;&nbsp;&nbsp;Sign Out</a>-->
+            <a href="/logout"><i class="material-icons left">exit_to_app</i>Sign Out</a>
+        </li>
+        <li>
+            <a href="/profile"><i class="material-icons left">dashboard</i>Dashboard</a>
+        </li>
+    </ul>
+    <!-- Some random JS code placed in the textarea for demo purposes -->
+    <textarea id="code" name="code">
+        sup'
+    </textarea>
+    <script>
+        window.onload = function () {
+            CodeMirror.commands.autocomplete = function (cm) {
+                CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+            };
+            window.editor = CodeMirror.fromTextArea(code, {
+                mode: "javascript",
+                lineNumbers: true,
+                matchBrackets: true,
+                theme: "monokai",
+                extraKeys: {
+                    "Ctrl-Space": "autocomplete"
+                },
+                foldGutter: {
+                    rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
+                },
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+            });
+            $(".CodeMirror").css('font-size', "18px");
+        };
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect();
+        var _name = getName();
+        socket.emit('open', {
+            name: _name
+        });
+        socket.on('open', function (data) {
+            editor.setValue(data.body);
+        });
+        socket.on('refresh', function (data) {
+            editor.setValue(data.body);
+        });
+        socket.on('change', function (data) {
+            editor.replaceRange(data.text, data.from, data.to);
+        });
+        editor.on('change', function (i, op) {
+            socket.emit('change', op);
+            socket.emit('refresh', {
+                name: _name,
+                body: editor.getValue()
+            });
+        });
+        $(window).keydown(function (e) {
+            if ((e.metaKey || e.ctrlKey) && e.keyCode == 83) { /*command+s*/
+                saveDocument();
+                e.preventDefault();
+                return false;
+            }
+        });
+        window.onhashchange = function () {
+            _name = getName();
+            socket.emit('open', {
+                name: _name
+            });
+        };
+        function saveDocument() {
+            socket.emit('save', {
+                name: _name,
+                body: editor.getValue()
+            });
+        }
+        function getName() {
+            var name = window.location.hash;
+            if (name && name.length > 1) {
+                name = name.substr(1)
+            } else {
+                name = 'test'
+            }
+            return name;
+        }
+    </script>
+</body>
+
+</html>

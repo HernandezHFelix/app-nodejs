@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Ybot Studio | Platform</title>
+    <meta name="theme-color" content="#7030A0">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css" rel="stylesheet" />
+    <style>
+        #example_filter > label > input,
+        .row,
+        div.row > h4 {
+            margin-bottom: 0px;
+        }
+        
+        #bots_wrapper > div:nth-child(1) > div:nth-child(1),
+        .dataTables_length {
+            display: none;
+        }
+        
+        .mdl-button--raised.mdl-button--colored:active,
+        .mdl-button--raised.mdl-button--colored,
+        .mdl-button--raised.mdl-button--colored:hover {
+            background-color: #7030A0;
+        }
+        
+        .mdl-data-table {
+            border: 0px transparent !important;
+        }
+        
+        #bots_filter > label {
+            font-size: 15px;
+            color: black;
+        }
+        
+        #bots_filter > label:before {
+            font-family: 'Material Icons';
+            content: 'search';
+            font-weight: bold;
+        }
+        
+        #bots_filter > label > input {
+            height: 16px;
+            width: 160px;
+            margin: 0px;
+            margin-left: 11px;
+        }
+        
+        #bots_wrapper > div:nth-child(1) > div:nth-child(2) {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        ol,
+        ul {
+            line-height: 64px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper" style="background: #7030A0;">
+            <ul id="nav-mobile" class="left">
+                <li>
+                    <a href="#" data-activates="sidebar" class="act-sidebar"><i class="material-icons">menu</i></a>
+                </li>
+                <li style="font-size: 23px;">
+                    Bot Dashboard
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <ul class="side-nav" id="sidebar">
+
+        <li>
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header userView">
+                        <div class="background">
+                            <img src="https://2.bp.blogspot.com/-xmjmQzG1SE8/VC2L9UZNYbI/AAAAAAAAikU/QGO0KFnjANk/s1600/Abstract%2BTriangles%2BWallpapers%2B2.jpg" style="max-width: 100%;">
+                        </div>
+                        <img class="circle" src="<%= user.google.pic %>">
+                        <span class="white-text name"><%= user.google.name %></span>
+                        <span class="white-text email">
+                                <%= user.google.email %>
+                                <i class="material-icons right" style="color: #fff">arrow_drop_down</i>
+                        </span>
+                    </div>
+                    <div class="collapsible-body" style="padding: 0px;">
+                        <ul>
+                            <li class="no-padding">
+                                <a href="/" class="waves-effect waves-grey"><i class="material-icons">exit_to_app</i>Sign Out</a>
+                            </li>
+                            <li>
+                                <div class="divider"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <li><a href="/profile"><i class="material-icons">dashboard</i>dashboard</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+    </ul>
+    <div class="row">
+        <table id="bots" class="mdl-data-table" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th style="text-align: left;font-weight: bold;color: black;font-size: 15px;">Name bot</th>
+                    <th style="text-align: left;font-weight: bold;color: black;font-size: 15px;">Last mod</th>
+                    <th style="text-align: left;font-weight: bold;color: black;font-size: 15px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i =0; i < fs.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= fs[i] %>
+                        </td>
+                        <td style="text-align: center;">Eclair</td>
+                        <td style="text-align: center;"><a href="/editor#<%= fs[i] %>" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit </a></td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+    <script>
+        $('document').ready(function () {
+            $('.act-sidebar').sideNav({
+                menuWidth: 300,
+                draggable: true
+            });
+            $('.collapsible').collapsible();
+
+            $('#bots').DataTable({
+                scrollY: '63vh',
+                scrollCollapse: true,
+                columnDefs: [{
+                    targets: [0, 1],
+                    className: 'mdl-data-table__cell--non-numeric'
+                }]
+            });
+            $('#bots_filter').addClass('right');
+
+
+            $('#bots_wrapper > div:nth-child(1) > div:nth-child(2)').removeClass('mdl-cell--6-col');
+            $('#bots_wrapper > div:nth-child(1) > div:nth-child(2)').addClass('mdl-cell--12-col');
+
+
+        });
+    </script>
+</body>
+
+</html>
