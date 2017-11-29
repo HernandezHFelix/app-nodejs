@@ -48,4 +48,5 @@ require('./app/routes.js')(app, passport, io, fs); // load our routes and pass i
 
 // launch ======================================================================
 server.listen(port);
+//Display console the port used for application
 console.log('The magic happens on port ' + port);
