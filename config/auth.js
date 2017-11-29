@@ -4,8 +4,8 @@
 module.exports = {
 
     'googleAuth' : {
-        'clientID'         : '146724332426-ocnru099mdkdfetvmegi8ve0b66hcnkr.apps.googleusercontent.com',
-        'clientSecret'     : 'mrwYaPpqL1no8HdrAyJAA2Kf',
+        'clientID'         : 'clientID',
+        'clientSecret'     : 'clientSecret',
         'callbackURL'      : 'urlcallback'
     }
 
