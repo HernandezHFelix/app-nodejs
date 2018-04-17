@@ -13,11 +13,11 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const configDB = require('./config/database.js');
 const ePort = process.env.PORT || 3010;
-const port = 3010;
+const PORT = 3010;
 const app = express();
 app.use(express.static(__dirname + '/public'));
-const server = http.createServer(app);
-const io = require('socket.io').listen(server);
+const SERVER = http.createServer(app);
+const SERVER_SOCKET = require('socket.io').listen(server);
 const fs = require('fs');
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
@@ -43,9 +43,9 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport, io, fs); // load our routes and pass in our app and fully configured passport
+require('./app/routes.js')(app, passport,SERVER_SOCKET, fs); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-server.listen(port);
+SERVER.listen(PORT);
 //Display console the port used for application
-console.log('The magic happens on port ' + port);
+console.log('The magic happens on port ' + PORT);
