@@ -1,5 +1,3 @@
-// server.js
-
 // set up ======================================================================
 // get all the tools we need
 const http = require('http');
