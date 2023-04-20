@@ -15,12 +15,9 @@ const PORT = 3010;
 const app = express();
 app.use(express.static(__dirname + '/public'));
 const SERVER = http.createServer(app);
-const SERVER_SOCKET = require('socket.io').listen(server);
+//const SERVER_SOCKET = require('socket.io').listen(server);
 const fs = require('fs');
-// configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
-
-require('./config/passport')(passport); // pass passport for configuration
+//require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
@@ -30,18 +27,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-// required for passport
-app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch', // session secret
-    resave: true,
-    saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
-
 // routes ======================================================================
-require('./app/routes.js')(app, passport,SERVER_SOCKET, fs); // load our routes and pass in our app and fully configured passport
+require('./app/routes.js')(app,fs); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 SERVER.listen(PORT);

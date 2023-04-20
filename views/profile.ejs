@@ -86,10 +86,10 @@
                         <div class="background">
                             <img src="https://2.bp.blogspot.com/-xmjmQzG1SE8/VC2L9UZNYbI/AAAAAAAAikU/QGO0KFnjANk/s1600/Abstract%2BTriangles%2BWallpapers%2B2.jpg" style="max-width: 100%;">
                         </div>
-                        <img class="circle" src="<%= user.google.pic %>">
-                        <span class="white-text name"><%= user.google.name %></span>
+                        <img class="circle" src="test">
+                        <span class="white-text name">Test</span>
                         <span class="white-text email">
-                                <%= user.google.email %>
+                                test
                                 <i class="material-icons right" style="color: #fff">arrow_drop_down</i>
                         </span>
                     </div>
@@ -125,15 +125,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% for(var i =0; i < fs.length; i++) { %>
-                    <tr>
-                        <td>
-                            <%= fs[i] %>
-                        </td>
-                        <td style="text-align: center;">Eclair</td>
-                        <td style="text-align: center;"><a href="/editor#<%= fs[i] %>" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit </a></td>
-                    </tr>
-                    <% } %>
+                
             </tbody>
         </table>
     </div>
